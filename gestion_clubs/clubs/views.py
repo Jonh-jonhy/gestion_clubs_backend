@@ -766,3 +766,54 @@ class StatistiquesView(APIView):
             },
             "top_clubs": list(classement_clubs),
         }, status=status.HTTP_200_OK)
+
+# ──────────────────────────────────────────────────────────────────
+# VUE : TOUS LES CLUBS (ADMIN)
+# GET /api/clubs/admin/tous/
+# Retourne tous les clubs peu importe leur statut.
+# Réservée à l'administrateur.
+# ──────────────────────────────────────────────────────────────────
+class TousLesClubsAdminView(generics.ListAPIView):
+    """
+    Retourne tous les clubs (en_attente, valide,
+    suspendu, archive) pour l'administrateur.
+    """
+    serializer_class   = ClubLectureSerializer
+    permission_classes = [EstAdministrateur]
+
+    def get_queryset(self):
+        # Filtre optionnel par statut via query param
+        # Ex: /api/clubs/admin/tous/?statut=en_attente
+        statut = self.request.query_params.get('statut')
+
+        queryset = Club.objects.all().select_related(
+            'createur', 'valide_par'
+        )
+
+        if statut:
+            queryset = queryset.filter(statut=statut)
+
+        return queryset
+
+
+# ──────────────────────────────────────────────────────────────────
+# VUE : MES ADHÉSIONS
+# GET /api/clubs/mes-adhesions/
+# Retourne les adhésions actives de l'utilisateur connecté.
+# Utilisé pour afficher "Mes Clubs" dans le dashboard.
+# ──────────────────────────────────────────────────────────────────
+class MesAdhesionsView(generics.ListAPIView):
+    """
+    Retourne toutes les adhésions actives
+    de l'utilisateur connecté.
+    """
+    serializer_class   = AdhesionLectureSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        return Adhesion.objects.filter(
+            utilisateur=self.request.user,
+            est_actif=True
+        ).select_related(
+            'club', 'utilisateur'
+        ).prefetch_related('roles_club')

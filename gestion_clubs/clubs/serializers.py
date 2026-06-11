@@ -114,6 +114,8 @@ class AdhesionLectureSerializer(serializers.ModelSerializer):
     # Informations de qui a ajouté ce membre
     ajoute_par  = UtilisateurProfilSerializer(read_only=True)
 
+    club = ClubLectureSerializer(read_only=True)
+
     class Meta:
         model  = Adhesion
         fields = [

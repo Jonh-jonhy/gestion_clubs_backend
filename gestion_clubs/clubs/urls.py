@@ -19,22 +19,18 @@ from .views import (
     ValiderPublicationView,
     PublicationsClubView,
     StatistiquesView,
+    TousLesClubsAdminView,
+    MesAdhesionsView,
 )
 
 urlpatterns = [
-
-    # ╔══════════════════════════════════════════════════════════════╗
-    # ║  RÈGLE IMPORTANTE : les routes STATIQUES doivent toujours   ║
-    # ║  être déclarées AVANT les routes dynamiques (<int:pk>).     ║
-    # ║  Django lit les URLs de haut en bas et s'arrête à la        ║
-    # ║  première correspondance trouvée.                           ║
-    # ╚══════════════════════════════════════════════════════════════╝
 
     # ── 1. Routes statiques globales ─────────────────────────────
     path('', ListeClubsView.as_view(), name='liste_clubs'),
     path('creer/', CreerClubView.as_view(), name='creer_club'),
     path('statistiques/', StatistiquesView.as_view(), name='statistiques'),
-
+    path('mes-adhesions/', MesAdhesionsView.as_view(), name='mes_adhesions'),
+    
     # ── 2. Publications globales (statiques, sans <pk>) ───────────
     # Ces routes DOIVENT être avant <int:pk>/ sinon Django
     # essaie de convertir "publications" en entier → erreur 404
@@ -43,6 +39,7 @@ urlpatterns = [
     path('publications/<int:pub_pk>/valider/', ValiderPublicationView.as_view(), name='valider_publication'),
 
     # ── 3. Routes dynamiques avec <int:pk> (EN DERNIER) ──────────
+    path('admin/tous/', TousLesClubsAdminView.as_view(), name='tous_clubs_admin'),
     path('<int:pk>/', DetailClubView.as_view(), name='detail_club'),
     path('<int:pk>/valider/', ValiderClubView.as_view(), name='valider_club'),
     path('<int:pk>/suspendre/', SuspendreClubView.as_view(), name='suspendre_club'),

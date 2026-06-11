@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-0f#7e5x1gq)ji8yk8@4rruydvx4bd^+!e2i&d%yoov(eiunyz4
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -47,11 +47,17 @@ INSTALLED_APPS = [
     # Nos applications
     'accounts',                 # Gestion des utilisateurs
     'clubs',   
+
+    # ... tes apps existantes
+    'whitenoise.runserver_nostatic',  # ← ajoute en premier si présent
+    'django.contrib.staticfiles',
+    # ...
 ]
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware', 
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -84,10 +90,10 @@ WSGI_APPLICATION = 'gestion_clubs.wsgi.application'
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    'default': dj_database_url.config(
+        default=f'sqlite:///{BASE_DIR / "db.sqlite3"}',
+        conn_max_age=600,
+    )
 }
 
 
@@ -126,6 +132,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
 STATIC_URL = 'static/'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 #
 # Configuration du Jeton
@@ -168,10 +176,24 @@ REST_FRAMEWORK = {
 #
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:4200",  # Port par défaut d'Angular
+    'https://ton-projet.vercel.app',
 ]
 
 AUTH_USER_MODEL = 'accounts.Utilisateur'
 
 import os
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_ROOT = BASE_DIR / 'media'
+
+import dj_database_url
+from decouple import config
+
+# ── Sécurité ──────────────────────────────────────────────────────
+SECRET_KEY = config('SECRET_KEY', default='ta-cle-actuelle')
+DEBUG = config('DEBUG', default=False, cast=bool)
+
+ALLOWED_HOSTS = [
+    'localhost',
+    '127.0.0.1',
+    '.onrender.com',  # autorise tous les sous-domaines Render
+]
