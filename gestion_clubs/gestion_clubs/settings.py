@@ -177,8 +177,10 @@ REST_FRAMEWORK = {
 #
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:4200",  # Port par défaut d'Angular
-    'https://ton-projet.vercel.app',
+    'https://gestion-clubs-frontend.vercel.app',
 ]
+
+CORS_ALLOWED_CREDENTIALS = True
 
 AUTH_USER_MODEL = 'accounts.Utilisateur'
 
@@ -195,5 +197,5 @@ DEBUG = config('DEBUG', default=False, cast=bool)
 ALLOWED_HOSTS = [
     'localhost',
     '127.0.0.1',
-    '.onrender.com',  # autorise tous les sous-domaines Render
+    'gestion-clubs-backend-1.onrender.com',  # autorise tous les sous-domaines Render
 ]
