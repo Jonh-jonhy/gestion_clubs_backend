@@ -37,7 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'django.contrib.staticfiles',
+    # 'django.contrib.staticfiles',
     #logout: ajoute une table special qui va contenir les token blackliste
     'rest_framework_simplejwt.token_blacklist',
     # Packages tiers
