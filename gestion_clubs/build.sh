@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# build.sh — script exécuté par Render à chaque déploiement
+# build.sh â€” script exÃ©cutÃ© par Render Ã  chaque dÃ©ploiement
 
 set -o errexit
 
