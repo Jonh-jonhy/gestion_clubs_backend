@@ -21,12 +21,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-0f#7e5x1gq)ji8yk8@4rruydvx4bd^+!e2i&d%yoov(eiunyz4'
+# SECRET_KEY = 'django-insecure-0f#7e5x1gq)ji8yk8@4rruydvx4bd^+!e2i&d%yoov(eiunyz4'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+# DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+# ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -37,25 +37,18 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    # 'django.contrib.staticfiles',
-    #logout: ajoute une table special qui va contenir les token blackliste
+
     'rest_framework_simplejwt.token_blacklist',
-    # Packages tiers
-    'rest_framework',           
-    'rest_framework_simplejwt', 
-    'corsheaders',              
+    'rest_framework',
+    'rest_framework_simplejwt',
+    'corsheaders',
 
-    # Nos applications
-    'accounts',                 # Gestion des utilisateurs
-    'clubs',   
+    'accounts',
+    'clubs',
 
-    # ... tes apps existantes
-    'whitenoise.runserver_nostatic',  # ← ajoute en premier si présent
-    'django.contrib.staticfiles',
-    # ...
     'cloudinary_storage',
-    'django.contrib.staticfiles',
     'cloudinary',
+    'django.contrib.staticfiles',
 ]
 
 MIDDLEWARE = [
