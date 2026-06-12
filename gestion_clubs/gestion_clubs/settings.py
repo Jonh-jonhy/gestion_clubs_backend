@@ -53,6 +53,9 @@ INSTALLED_APPS = [
     'whitenoise.runserver_nostatic',  # ← ajoute en premier si présent
     'django.contrib.staticfiles',
     # ...
+    'cloudinary_storage',
+    'django.contrib.staticfiles',
+    'cloudinary',
 ]
 
 MIDDLEWARE = [
@@ -199,3 +202,5 @@ ALLOWED_HOSTS = [
     '127.0.0.1',
     'gestion-clubs-backend-1.onrender.com',  # autorise tous les sous-domaines Render
 ]
+
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
